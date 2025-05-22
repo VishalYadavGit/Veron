@@ -7,11 +7,12 @@ class Main {
             String[] RequestData = Utils.ParseRoute(client);
             if (RequestData == null) return;
 
+            String method = RequestData[0];
             String path = RequestData[1];
-            System.out.println("Routing path: " + path);
+            System.out.println("Routing path: " + path + " with method: " + method);
 
             PrintWriter out = new PrintWriter(client.getOutputStream(), true);
-            router.handleRequest(path, out);
+            router.handleRequest(path, method, out);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

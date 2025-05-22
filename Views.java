@@ -11,4 +11,9 @@ public class Views {
         System.out.println("Rendering About Page");
         Utils.RenderHTML("templates/about.html", writer);
     }
+
+    public static void HandleSubmit(PrintWriter writer) {
+        System.out.println("Handling POST Request with JSON Response");
+        Utils.RenderJSON(writer, Utils.CreateJSONResponse("success", "Form submitted successfully!"));
+    }
 }

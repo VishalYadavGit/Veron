@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Utils {
     public static String[] ParseRoute(Socket client) throws IOException {
@@ -58,5 +60,33 @@ public class Utils {
             writer.println();
             writer.println("Internal Server Error");
         }
+    }
+
+    public static String ConvertToJSON(Map<String, String> data) {
+        StringBuilder json = new StringBuilder("{");
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            json.append("\"").append(entry.getKey()).append("\": \"").append(entry.getValue()).append("\", ");
+        }
+        if (json.length() > 1) {
+            json.setLength(json.length() - 2);
+        }
+        json.append("}");
+        return json.toString();
+    }
+
+    public static void RenderJSON(PrintWriter writer, Map<String, String> data) {
+        String json = ConvertToJSON(data);
+        writer.println("HTTP/1.1 200 OK");
+        writer.println("Content-Type: application/json");
+        writer.println("Content-Length: " + json.length());
+        writer.println();
+        writer.println(json);
+    }
+
+    public static Map<String, String> CreateJSONResponse(String status, String message) {
+        Map<String, String> jsonResponse = new HashMap<>();
+        jsonResponse.put("status", status);
+        jsonResponse.put("message", message);
+        return jsonResponse;
     }
 }
